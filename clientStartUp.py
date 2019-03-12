@@ -4,6 +4,7 @@ from kivy.factory import Factory
 from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
 from gitHandler import *
+from pollingService import pollGit
 
 import os
 
@@ -28,9 +29,10 @@ class Root(FloatLayout):
 
 
     def load(self, path, filename):
-        gitHandler.searchGit(filename[0])
-        with open(os.path.join(path, filename[0])) as stream:
-            self.scroll_view.text = stream.read()
+        result = gitHandler.searchGit(filename[0])
+        if result:
+            repo = gitHandler.fetchData(result)
+            pollGit(repo)
         self.dismiss_popup()
 
 

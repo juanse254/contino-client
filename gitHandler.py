@@ -9,6 +9,7 @@ class gitHandler:
             exists = 'not found'
         if exists == 'not found':
             return False
-    def fetchData(self, existentDir):
+    def fetchData(existentDir): #this function will return a Repo object with all data from the git repo
         repo = git.Repo(existentDir)
+        return repo
 
