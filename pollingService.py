@@ -2,9 +2,10 @@ import polling
 from gitHandler import *
 
 def pollGit(Repo):
+    index = Repo.commit().committed_date
     polling.poll(
-        lambda: gitHandler.fetchData(Repo.working_dir) != Repo, #TODO:esto verifica si hay algun cambio no necesariamente un commit, esto hay q agregar y testear. Hay q ver si es mejor ver el index o comparar el commit.
-        step=300,
+        lambda: gitHandler.fetchData(Repo.working_dir).commit().committed_date != index, #TODO:esto verifica si hay algun commit local nuevo en comparacion al anterior(el llamado por la func).
+        step=10,
         poll_forever=True,
         check_success=is_correct_response,
     )
