@@ -3,11 +3,12 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.factory import Factory
 from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
-from gitHandler import *
+from gitHandler import gitHandler
 from pollingService import pollGit
 
 import os
 
+result = None
 
 class LoadDialog(FloatLayout):
     load = ObjectProperty(None)
@@ -29,11 +30,16 @@ class Root(FloatLayout):
 
 
     def load(self, path, filename):
+        global result
         result = gitHandler.searchGit(filename[0])
         if result:
-            repo = gitHandler.fetchData(result)
-            pollGit(repo) #TODO:esto debe ser un hilo para que no bloquee el resto del programa.
+            startHandler()
         self.dismiss_popup()
+
+def startHandler():
+    global result
+    repo = gitHandler.fetchData(result)
+    pollGit(repo)  # TODO:esto debe ser un hilo para que no bloquee el resto del programa.
 
 
 class clientStartUp(App):

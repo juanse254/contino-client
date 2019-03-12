@@ -1,5 +1,5 @@
 import polling
-from gitHandler import *
+from gitHandler import gitHandler
 
 def pollGit(Repo):
     index = Repo.commit().committed_date
@@ -13,4 +13,5 @@ def pollGit(Repo):
 def is_correct_response(error):
     if error == True:
         print('mando el commmit o diff al server')
-        #aqui hay llamar otra vez a la funcion original, cambiando el repo anterior por el nuevo para sacar nuevos cambios. o sea llamar a gitHandler con el Repo actual.
+        
+        #aqui hay llamar otra vez a la funcion original, cambiando el repo anterior por el nuevo para sacar nuevos cambios. o sea llamar a gitHandler con el Repo actual o devolver algo al main para que salga del loop y pueda volver a llamar.
