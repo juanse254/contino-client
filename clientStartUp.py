@@ -32,7 +32,7 @@ class Root(FloatLayout):
         result = gitHandler.searchGit(filename[0])
         if result:
             repo = gitHandler.fetchData(result)
-            pollGit(repo)
+            pollGit(repo) #TODO:esto debe ser un hilo para que no bloquee el resto del programa.
         self.dismiss_popup()
 
 

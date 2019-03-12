@@ -9,6 +9,7 @@ def pollGit(Repo):
         check_success=is_correct_response,
     )
 
-def is_correct_response():
-    print('mando el commmit o diff al server')
-    #aqui hay llamar otra vez a la funcion original, cambiando el repo anterior por el nuevo para sacar nuevos cambios. o sea llamar a gitHandler con el Repo actual.
+def is_correct_response(error):
+    if error == True:
+        print('mando el commmit o diff al server')
+        #aqui hay llamar otra vez a la funcion original, cambiando el repo anterior por el nuevo para sacar nuevos cambios. o sea llamar a gitHandler con el Repo actual.
