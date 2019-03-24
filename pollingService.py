@@ -29,7 +29,7 @@ def is_correct_response(error):
         global index
         index = repo.commit().committed_date
         print('mando el commmit o diff al server')
-        #req = requests.post(HOST,data={'patch':patch, 'remote_url': remote_url}) # Aqui solo mando el repo que es el padre pero puedo mandar repo.git.diff() que es el patch o lo que sea realmente.
-        #print(req.text)
+        req = requests.post(HOST,data={'patch':patch, 'remote_url': remote_url}) # Aqui solo mando el repo que es el padre pero puedo mandar repo.git.diff() que es el patch o lo que sea realmente.
+        print(req.text)
 
         #aqui hay llamar otra vez a la funcion original, cambiando el repo anterior por el nuevo para sacar nuevos cambios. o sea llamar a gitHandler con el Repo actual o devolver algo al main para que salga del loop y pueda volver a llamar.
