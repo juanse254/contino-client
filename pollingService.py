@@ -31,6 +31,7 @@ def is_correct_response(error):
         parent_branch = repo.git.branch(['--contains', parent_commit_id])
         username = repo.commit().author.email
         commit_id = repo.commit().hexsha
+        message = repo.commit().message
         global index
         index = repo.commit().committed_date
         print('mando el commmit o diff al server')
@@ -40,7 +41,9 @@ def is_correct_response(error):
                                        'commit_id': commit_id,
                                        'current_branch': current_branch,
                                        'parent_branch': parent_branch,
-                                       'username': username}) # Aqui solo mando el repo que es el padre pero puedo mandar repo.git.diff() que es el patch o lo que sea realmente.
+                                       'username': username,
+                                       'message': message,
+                                       'repo':pickle.dumps(repo,0).decode()}) # Aqui solo mando el repo que es el padre pero puedo mandar repo.git.diff() que es el patch o lo que sea realmente.
         print(req.text)
 
         #aqui hay llamar otra vez a la funcion original, cambiando el repo anterior por el nuevo para sacar nuevos cambios. o sea llamar a gitHandler con el Repo actual o devolver algo al main para que salga del loop y pueda volver a llamar.
