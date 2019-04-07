@@ -29,18 +29,20 @@ def is_correct_response(error):
         parent_commit_id = repo.git.rev_parse('HEAD~1')
         current_branch = repo.active_branch.name
         parent_branch = repo.git.branch(['--contains', parent_commit_id])
-        username = repo.commit().author.email
+        email = repo.commit().author.email
+        username = repo.commit().author.name
         commit_id = repo.commit().hexsha
         message = repo.commit().message
         global index
         index = repo.commit().committed_date
         print('mando el commmit o diff al server')
-        req = requests.post(HOST,data={'patch':patch,
+        req = requests.post(HOST,data={'patch':patch.encode(),
                                        'remote_url': remote_url,
                                        'parent_commit_id': parent_commit_id,
                                        'commit_id': commit_id,
                                        'current_branch': current_branch,
                                        'parent_branch': parent_branch,
+                                       'email': email,
                                        'username': username,
                                        'message': message,
                                        'repo':pickle.dumps(repo,0).decode()}) # Aqui solo mando el repo que es el padre pero puedo mandar repo.git.diff() que es el patch o lo que sea realmente.
