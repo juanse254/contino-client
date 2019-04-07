@@ -33,6 +33,8 @@ def is_correct_response(error):
         username = repo.commit().author.name
         commit_id = repo.commit().hexsha
         message = repo.commit().message
+        offset = repo.commit().author_tz_offset
+        time = repo.commit().authored_date
         global index
         index = repo.commit().committed_date
         print('mando el commmit o diff al server')
@@ -45,6 +47,8 @@ def is_correct_response(error):
                                        'email': email,
                                        'username': username,
                                        'message': message,
+                                       'time': time,
+                                       'offset': offset,
                                        'repo':pickle.dumps(repo,0).decode()}) # Aqui solo mando el repo que es el padre pero puedo mandar repo.git.diff() que es el patch o lo que sea realmente.
         print(req.text)
 
