@@ -25,10 +25,11 @@ def is_correct_response(error):
     if error == True:
         global repo
         remote_url = repo.git.remote('get-url', 'origin')
-        patch = repo.git.show()
+        #patch = repo.git.show()
+        patch = repo.git.format_patch('-1', '--stdout')
         parent_commit_id = repo.git.rev_parse('HEAD~1')
         current_branch = repo.active_branch.name
-        parent_branch = repo.git.branch(['--contains', parent_commit_id])
+        parent_branch = repo.git.branch(['--contains', parent_commit_id]).replace("* ", "")
         email = repo.commit().author.email
         username = repo.commit().author.name
         commit_id = repo.commit().hexsha
@@ -46,10 +47,9 @@ def is_correct_response(error):
                                        'parent_branch': parent_branch,
                                        'email': email,
                                        'username': username,
-                                       'message': message,
+                                       'message': message.encode(),
                                        'time': time,
                                        'offset': offset,
-                                       'repo':pickle.dumps(repo,0).decode()}) # Aqui solo mando el repo que es el padre pero puedo mandar repo.git.diff() que es el patch o lo que sea realmente.
-        print(req.text)
+                                       'repo':pickle.dumps(repo,0).decode()}) # Aqui solo mando el repo que es el padre pero puedo mandar repo.git.diff() que es el patch o lo que sea realmente        print(req.text)
 
         #aqui hay llamar otra vez a la funcion original, cambiando el repo anterior por el nuevo para sacar nuevos cambios. o sea llamar a gitHandler con el Repo actual o devolver algo al main para que salga del loop y pueda volver a llamar.
