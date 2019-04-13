@@ -2,6 +2,7 @@ import polling
 import pickle
 import requests
 import git
+import json
 from gitHandler import gitHandler
 
 HOST = 'http://127.0.0.1:8000/'
@@ -36,6 +37,7 @@ def is_correct_response(error):
         message = repo.commit().message
         offset = repo.commit().author_tz_offset
         time = repo.commit().authored_date
+        checkDelta(remote_url)
         global index
         index = repo.commit().committed_date
         print('mando el commmit o diff al server')
@@ -49,7 +51,14 @@ def is_correct_response(error):
                                        'username': username,
                                        'message': message.encode(),
                                        'time': time,
-                                       'offset': offset,
-                                       'repo':pickle.dumps(repo,0).decode()}) # Aqui solo mando el repo que es el padre pero puedo mandar repo.git.diff() que es el patch o lo que sea realmente        print(req.text)
+                                       'offset': offset}) # Aqui solo mando el repo que es el padre pero puedo mandar repo.git.diff() que es el patch o lo que sea realmente        print(req.text)
+def checkDelta(remote_url):
 
+    completeList= list(repo.iter_commits(repo.active_branch))
+    idList = []
+    for commit in completeList:
+        idList.append(commit.hexsha)
+    jsonList = json.dumps({'commits' : idList, 'url' : remote_url})
+    req = requests.post(HOST + 'commitCheck', data=jsonList)
+    print(req)
         #aqui hay llamar otra vez a la funcion original, cambiando el repo anterior por el nuevo para sacar nuevos cambios. o sea llamar a gitHandler con el Repo actual o devolver algo al main para que salga del loop y pueda volver a llamar.
