@@ -59,6 +59,6 @@ def checkDelta(remote_url):
     for commit in completeList:
         idList.append(commit.hexsha)
     jsonList = json.dumps({'commits' : idList, 'url' : remote_url})
-    req = requests.post(HOST + 'commitCheck', data=jsonList)
-    print(req)
-        #aqui hay llamar otra vez a la funcion original, cambiando el repo anterior por el nuevo para sacar nuevos cambios. o sea llamar a gitHandler con el Repo actual o devolver algo al main para que salga del loop y pueda volver a llamar.
+    req = requests.post(HOST + 'commitCheck/', data=jsonList)
+    print(req.content)
+        #aqu hay llamar otra vez a la funcion original, cambiando el repo anterior por el nuevo para sacar nuevos cambios. o sea llamar a gitHandler con el Repo actual o devolver algo al main para que salga del loop y pueda volver a llamar.
