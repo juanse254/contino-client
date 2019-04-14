@@ -62,7 +62,8 @@ def is_correct_response(error):
         global index
         index = repo.commit().committed_date
         print('mando el commmit o diff al server')
-        req = requests.post(HOST, data=delta)
+        headers = {'Content-Type': 'application/json', 'Accept':'application/json'}
+        req = requests.post(HOST, data=json.dumps(delta), headers = headers)
 
 
             # req = requests.post(HOST,data={'patch':patch.encode(),
