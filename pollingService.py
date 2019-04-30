@@ -37,7 +37,7 @@ def is_correct_response(error):
             patch = repo.git.format_patch('-1', '--stdout', commit) #TODO: revisar si esto es correcto, hay que usar diff para el merge info.
             parent_commit_id = repo.commit(commit).parents[0].hexsha
             current_branch = repo.active_branch.name
-            parent_branch = repo.git.branch(['--contains', parent_commit_id]).replace("* ", "")#TODO: mismo comentarios de 33 y 37 y 38 P.D: esto funciona?
+            parent_branch = repo.git.branch(['--contains', parent_commit_id]).replace("* ", "")#TODO: usar objeto git y no consola P.D: esto funciona?
             email = repo.commit(commit).author.email
             username = repo.commit(commit).author.name
             commit_id = repo.commit(commit).hexsha
