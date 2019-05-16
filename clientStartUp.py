@@ -5,10 +5,26 @@ from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
 from gitHandler import gitHandler
 from pollingService import pollGit
-
+from kivy.uix.scatter import Scatter
+from kivy.graphics.svg import Svg
+from kivy.core.window import Window
+from requests import post
+import urllib.request
+import json
 import os
+import threading
 
 result = None
+
+HOST = 'http://5a185d27.ngrok.io/'
+
+class SvgWidget(Scatter):
+
+    def __init__(self, filename, **kwargs):
+        super(SvgWidget, self).__init__(**kwargs)
+        with self.canvas:
+            svg = Svg(filename)
+        self.size = svg.width, svg.height
 
 class LoadDialog(FloatLayout):
     load = ObjectProperty(None)
@@ -18,6 +34,7 @@ class Root(FloatLayout):
     loadfile = ObjectProperty(None)
     savefile = ObjectProperty(None)
     text_input = ObjectProperty(None)
+    svg= ObjectProperty(None)
 
     def dismiss_popup(self):
         self._popup.dismiss()
@@ -36,6 +53,20 @@ class Root(FloatLayout):
             startHandler()
         self.dismiss_popup()
 
+    def show_image(self):
+        global result
+        #repo = gitHandler.fetchData(result) #TODO:check if we selected a repo already.
+        req = post(HOST + 'getGraph/', data={'gitUrl' : 'lol'} ) #pass the repo url instead of lol
+        image_url = json.loads(req.text)['graphUrl']
+        if(self.svg):
+            self.remove_widget(self.svg)
+        urllib.request.urlretrieve(image_url, "tmp.svg")
+        self.svg = SvgWidget('tmp.svg', size_hint=(None, None))
+        self.add_widget(self.svg)
+        self.svg.scale = 5.
+        self.svg.center = Window.center
+        os.remove('tmp.svg')
+
 def startHandler():
     global result
     repo = gitHandler.fetchData(result)
@@ -48,6 +79,7 @@ class clientStartUp(App):
 
 Factory.register('Root', cls=Root)
 Factory.register('LoadDialog', cls=LoadDialog)
+Factory.register('SvgWidget', cls=SvgWidget)
 
 
 if __name__ == '__main__':
