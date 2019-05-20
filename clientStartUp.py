@@ -63,7 +63,7 @@ class Root(FloatLayout):
         urllib.request.urlretrieve(image_url, "tmp.svg")
         self.svg = SvgWidget('tmp.svg', size_hint=(None, None))
         self.add_widget(self.svg)
-        self.svg.scale = 5.
+        self.svg.scale = 1.5
         self.svg.center = Window.center
         os.remove('tmp.svg')
 
