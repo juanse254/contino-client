@@ -17,7 +17,7 @@ import webbrowser
 
 result = None
 
-HOST = 'http://fa2572e4.ngrok.io/'
+HOST = 'http://c6043f4f.ngrok.io/'
 
 class SvgWidget(Scatter):
 
@@ -49,8 +49,7 @@ class Root(FloatLayout):
 
     def load(self, path, filename):
         global result
-        #result = gitHandler.searchGit(filename[0])
-        result = gitHandler.searchGit('/Users/nicolasgordillo/Documents/uzh/fs19/masterProject/git_projects/test/Coffee')
+        result = gitHandler.searchGit(filename[0])
         if result:
             startHandler()
             self.dismiss_popup()
@@ -58,7 +57,7 @@ class Root(FloatLayout):
     def show_image(self):
         global result
         #repo = gitHandler.fetchData(result) #TODO:check if we selected a repo already.
-        req = post(HOST + 'getGraph/', data={'gitUrl' : 'lol'} ) #pass the repo url instead of lol
+        req = post(HOST + 'getGraph/', data={'gitUrl' : 'lol', 'commitUser': '8d01409059221e8e3ea416569869c601293beac0'} ) #pass the repo url instead of lol
         image_url = json.loads(req.text)['graphUrl']
         webbrowser.open_new(image_url)
         if(self.svg):
