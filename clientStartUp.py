@@ -17,7 +17,7 @@ import webbrowser
 
 result = None
 
-HOST = 'http://c6043f4f.ngrok.io/'
+HOST = 'http://7a57bf9e.ngrok.io/'
 
 class SvgWidget(Scatter):
 
@@ -55,9 +55,9 @@ class Root(FloatLayout):
             self.dismiss_popup()
 
     def show_image(self):
-        global result
-        #repo = gitHandler.fetchData(result) #TODO:check if we selected a repo already.
-        req = post(HOST + 'getGraph/', data={'gitUrl' : 'lol', 'commitUser': '8d01409059221e8e3ea416569869c601293beac0'} ) #pass the repo url instead of lol
+        global result #TODO:disable select directory button if result exists.
+        repo = gitHandler.fetchData(result) #TODO:check if we selected a repo already.
+        req = post(HOST + 'getGraph/', data={'gitUrl' : repo.remotes.origin.url , 'commitUser': repo.commit().hexsha} ) #pass the repo url instead of lol
         image_url = json.loads(req.text)['graphUrl']
         webbrowser.open_new(image_url)
         if(self.svg):
@@ -72,7 +72,8 @@ class Root(FloatLayout):
 def startHandler():
     global result
     repo = gitHandler.fetchData(result)
-    pollGit(repo)  # TODO:esto debe ser un hilo para que no bloquee el resto del programa.
+    poller = threading.Thread(target=pollGit, args=(repo,), daemon=True)
+    poller.start()
 
 
 class clientStartUp(App):

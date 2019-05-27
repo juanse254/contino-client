@@ -5,8 +5,7 @@ import git
 import json
 from gitHandler import gitHandler
 
-HOST = 'http://127.0.0.1:8000/'
-PORT = 8000
+HOST = 'http://7a57bf9e.ngrok.io/'
 repo = None
 index = None
 #TODO:Este servicio deberia ser una clase.
