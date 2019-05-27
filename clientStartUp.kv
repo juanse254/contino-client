@@ -8,11 +8,14 @@ Root:
             size_hint_y: None
             height: 30
             Button:
+                id: pickerButton
                 text: 'Load'
                 on_release: root.show_load()
             Button:
+                id: updaterButton
                 text: 'update'
                 on_release: root.show_image()
+                disabled: True
 
         BoxLayout:
             ScrollView:

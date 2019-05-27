@@ -53,6 +53,8 @@ class Root(FloatLayout):
         if result:
             startHandler()
             self.dismiss_popup()
+            self.ids.updaterButton.disabled = False
+            self.ids.pickerButton.disabled = True
 
     def show_image(self):
         global result #TODO:disable select directory button if result exists.
