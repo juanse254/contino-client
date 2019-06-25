@@ -17,7 +17,7 @@ import webbrowser
 
 result = None
 
-HOST = 'http://7a57bf9e.ngrok.io/'
+HOST = 'http://127.0.0.1:8000/'
 
 class SvgWidget(Scatter):
 
@@ -59,17 +59,21 @@ class Root(FloatLayout):
     def show_image(self):
         global result #TODO:disable select directory button if result exists.
         repo = gitHandler.fetchData(result) #TODO:check if we selected a repo already.
-        req = post(HOST + 'getGraph/', data={'gitUrl' : repo.remotes.origin.url , 'commitUser': repo.commit().hexsha} ) #pass the repo url instead of lol
-        image_url = json.loads(req.text)['graphUrl']
-        webbrowser.open_new(image_url)
-        if(self.svg):
-            self.remove_widget(self.svg)
-        #urllib.request.urlretrieve(image_url, "tmp.svg")
-        self.svg = SvgWidget('tmp.svg', size_hint=(None, None))
-        self.add_widget(self.svg)
-        self.svg.scale = 0.5
-        self.svg.center = Window.center
-        #os.remove('tmp.svg')
+        try:
+            req = post(HOST + 'getGraph/', data={'gitUrl' : repo.remotes.origin.url , 'commitUser': repo.commit().hexsha} ) #pass the repo url instead of lol
+            image_url = json.loads(req.text)['graphUrl']
+            webbrowser.open_new(image_url)
+            if(self.svg):
+                self.remove_widget(self.svg)
+            #urllib.request.urlretrieve(image_url, "tmp.svg")
+            self.svg = SvgWidget('tmp.svg', size_hint=(None, None))
+            self.add_widget(self.svg)
+            self.svg.scale = 0.5
+            self.svg.center = Window.center
+            #os.remove('tmp.svg')
+        except BaseException as e:
+            print("Couldnt fetch data: ")
+            print(e)
 
 def startHandler():
     global result
