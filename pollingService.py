@@ -5,7 +5,7 @@ import git
 import json
 from gitHandler import gitHandler
 
-HOST = 'http://7a57bf9e.ngrok.io/'
+HOST = 'http://127.0.0.1:8000/'
 repo = None
 index = None
 #TODO:Este servicio deberia ser una clase.
@@ -66,13 +66,16 @@ def is_correct_response(error):
 
 
 def checkDelta(remote_url):
-
-    completeList= list(repo.iter_commits(repo.active_branch))
-    idList = commitListtoArray(completeList)
-    jsonList = json.dumps({'commits' : idList, 'url' : remote_url})
-    req = requests.post(HOST + 'commitCheck/', data=jsonList)
-    print(req.content)
-    return json.loads(req.text)['pivot_commit']
+    try:
+        completeList= list(repo.iter_commits(repo.active_branch))
+        idList = commitListtoArray(completeList)
+        jsonList = json.dumps({'commits' : idList, 'url' : remote_url})
+        req = requests.post(HOST + 'commitCheck/', data=jsonList)
+        print(req.content)
+        return json.loads(req.text)['pivot_commit']
+    except BaseException as e:
+        print("Couldnt get delta")
+        print(e)
 
 def commitListtoArray(list):
     idList = []
