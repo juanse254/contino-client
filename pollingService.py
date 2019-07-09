@@ -5,7 +5,7 @@ import git
 import json
 from gitHandler import gitHandler
 
-HOST = 'http://127.0.0.1:8000/'
+HOST = 'http://82.197.171.186:8000/'
 repo = None
 index = None
 #TODO:Este servicio deberia ser una clase.
@@ -35,6 +35,7 @@ def is_correct_response(error):
             #patch = repo.git.show()
             patch = repo.git.format_patch('-1', '--stdout', commit) #TODO: revisar si esto es correcto, hay que usar diff para el merge info.
             parent_commit_id = repo.commit(commit).parents[0].hexsha
+            parent_commit_id_array = commitListtoArray(repo.commit(commit).parents)
             current_branch = repo.active_branch.name
             parent_branch = repo.git.branch(['--contains', parent_commit_id]).replace("* ", "")#TODO: usar objeto git y no consola P.D: esto funciona?
             email = repo.commit(commit).author.email
@@ -51,6 +52,7 @@ def is_correct_response(error):
                 'patch':str(patch),
                 'remote_url': str(remote_url),
                 'parent_commit_id': str(parent_commit_id),
+                'parent_commit_id_array' : parent_commit_id_array,
                 'commit_id': str(commit_id),
                 'current_branch': str(current_branch),
                 'parent_branch': str(parent_branch),

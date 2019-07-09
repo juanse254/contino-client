@@ -63,14 +63,6 @@ class Root(FloatLayout):
             req = post(HOST + 'getGraph/', data={'gitUrl' : repo.remotes.origin.url , 'commitUser': repo.commit().hexsha} ) #pass the repo url instead of lol
             image_url = json.loads(req.text)['graphUrl']
             webbrowser.open_new(image_url)
-            if(self.svg):
-                self.remove_widget(self.svg)
-            #urllib.request.urlretrieve(image_url, "tmp.svg")
-            self.svg = SvgWidget('tmp.svg', size_hint=(None, None))
-            self.add_widget(self.svg)
-            self.svg.scale = 0.5
-            self.svg.center = Window.center
-            #os.remove('tmp.svg')
         except BaseException as e:
             print("Couldnt fetch data: ")
             print(e)
