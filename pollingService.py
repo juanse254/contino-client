@@ -5,7 +5,7 @@ import git
 import json
 from gitHandler import gitHandler
 
-HOST = 'http://7a57bf9e.ngrok.io/'
+HOST = 'http://82.197.171.186:8000/'
 repo = None
 index = None
 #TODO:Este servicio deberia ser una clase.
@@ -41,8 +41,12 @@ def is_correct_response(error):
             username = repo.commit(commit).author.name
             commit_id = repo.commit(commit).hexsha
             message = repo.commit(commit).message
-            offset = repo.commit(commit).author_tz_offset
-            time = repo.commit(commit).authored_date
+            author_offset = repo.commit(commit).author_tz_offset
+            author_time = repo.commit(commit).authored_date
+            commiter_offset = repo.commit(commit).committer_tz_offset
+            commiter_time = repo.commit(commit).committed_date
+            commiter_name = repo.commit(commit).committer.name
+            commiter_email = repo.commit(commit).committer.email
             tempCommit = json.dumps({
                 'patch':str(patch),
                 'remote_url': str(remote_url),
@@ -53,8 +57,12 @@ def is_correct_response(error):
                 'email': str(email),
                 'username': str(username),
                 'message': str(message),
-                'time': str(time),
-                'offset': str(offset)
+                'author_time': str(author_time),
+                'author_offset': str(author_offset),
+                'commiter_offset': str(commiter_offset),
+                'commiter_time': str(commiter_time),
+                'commiter_name': str(commiter_name),
+                'commiter_email': str(commiter_email),
             })
             delta.append(tempCommit)
 
@@ -79,5 +87,3 @@ def commitListtoArray(list):
     for commit in list:
         idList.append(commit.hexsha)
     return idList
-
-        #aqu hay llamar otra vez a la funcion original, cambiando el repo anterior por el nuevo para sacar nuevos cambios. o sea llamar a gitHandler con el Repo actual o devolver algo al main para que salga del loop y pueda volver a llamar.
