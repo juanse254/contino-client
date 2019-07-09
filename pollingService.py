@@ -5,7 +5,7 @@ import git
 import json
 from gitHandler import gitHandler
 
-HOST = 'http://82.197.171.186:8000/'
+HOST = 'http://127.0.0.1:8000/'
 repo = None
 index = None
 #TODO:Este servicio deberia ser una clase.
@@ -74,16 +74,21 @@ def is_correct_response(error):
 
 
 def checkDelta(remote_url):
-
-    completeList= list(repo.iter_commits(repo.active_branch))
-    idList = commitListtoArray(completeList)
-    jsonList = json.dumps({'commits' : idList, 'url' : remote_url})
-    req = requests.post(HOST + 'commitCheck/', data=jsonList)
-    print(req.content)
-    return json.loads(req.text)['pivot_commit']
+    try:
+        completeList= list(repo.iter_commits(repo.active_branch))
+        idList = commitListtoArray(completeList)
+        jsonList = json.dumps({'commits' : idList, 'url' : remote_url})
+        req = requests.post(HOST + 'commitCheck/', data=jsonList)
+        print(req.content)
+        return json.loads(req.text)['pivot_commit']
+    except BaseException as e:
+        print("Couldnt get delta")
+        print(e)
 
 def commitListtoArray(list):
     idList = []
     for commit in list:
         idList.append(commit.hexsha)
     return idList
+
+        #aqu hay llamar otra vez a la funcion original, cambiando el repo anterior por el nuevo para sacar nuevos cambios. o sea llamar a gitHandler con el Repo actual o devolver algo al main para que salga del loop y pueda volver a llamar.
