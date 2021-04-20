@@ -27,7 +27,7 @@ mock==3.0.5
 more-itertools==7.0.0
 pluggy==0.11.0
 polling==0.3.0
-py==1.8.0
+py==1.10.0
 pyasn1==0.4.5
 pytest==4.5.0
 python-dateutil==2.8.0
